@@ -1,0 +1,278 @@
+// src/components/Game.js
+import React, { useState, useEffect, useRef } from 'react';
+import GameOver from './GameOver';
+
+const GRAVITY = 0.6;
+const FLAP_STRENGTH = -12;
+const PIPE_SPEED = 4;
+const PIPE_WIDTH = 80;
+const BIRD_WIDTH = 70; // Adjusted for image size
+const BIRD_HEIGHT = 70; // Adjusted for image size
+const PIPE_GAP = 250;
+
+const Game = () => { // Removed onGameOver prop
+  const [birdPos, setBirdPos] = useState(250);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [score, setScore] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
+  const [velocity, setVelocity] = useState(0);
+  const [pipes, setPipes] = useState([]);
+  const [isFlapping, setIsFlapping] = useState(false); // For flap animation
+  const [highScore, setHighScore] = useState(() => {
+    return parseInt(localStorage.getItem('highScore')) || 0;
+  });
+
+  const gameLoopRef = useRef();
+  const pipeGeneratorRef = useRef();
+
+  // ... [Sound Effects - Optional]
+
+  const handleStart = () => {
+    if (gameOver) {
+      setBirdPos(250);
+      setScore(0);
+      setPipes([]);
+      setGameOver(false);
+      setVelocity(0);
+    }
+    setGameStarted(true);
+  };
+
+  const handleFlap = () => {
+    if (!gameStarted) {
+      handleStart();
+    }
+    setVelocity(FLAP_STRENGTH);
+    setIsFlapping(true);
+    // Play flap sound (Optional)
+    // flapSound.currentTime = 0;
+    // flapSound.play();
+    setTimeout(() => setIsFlapping(false), 500); // Duration matches flap animation
+  };
+
+  const handleRestart = () => {
+    // Update high score if necessary
+    if (score > highScore) {
+      setHighScore(score);
+      localStorage.setItem('highScore', score);
+    }
+    // Reset game state
+    setBirdPos(250);
+    setScore(0);
+    setPipes([]);
+    setGameOver(false);
+    setVelocity(0);
+    setGameStarted(false);
+  };
+
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (e.code === 'Space') {
+        handleFlap();
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [gameStarted]);
+
+  useEffect(() => {
+    if (gameStarted && !gameOver) {
+      const generatePipe = () => {
+        const height = Math.random() * (window.innerHeight - PIPE_GAP - 100) + 50;
+        setPipes(prev => [...prev, { left: window.innerWidth, height, passed: false }]);
+      };
+
+      pipeGeneratorRef.current = setInterval(generatePipe, 2500);
+      generatePipe();
+
+      return () => clearInterval(pipeGeneratorRef.current);
+    }
+  }, [gameStarted, gameOver]);
+
+  useEffect(() => {
+    if (gameStarted && !gameOver) {
+      const gameLoop = () => {
+        setBirdPos(prev => {
+          const newPos = prev + velocity;
+          if (newPos > window.innerHeight - 100 || newPos < 0) {
+            setGameOver(true);
+            // Removed onGameOver(); // Notify parent
+            return prev;
+          }
+          return newPos;
+        });
+
+        setVelocity(prev => prev + GRAVITY);
+
+        setPipes(prev => {
+          const newPipes = prev
+            .map(pipe => ({
+              ...pipe,
+              left: pipe.left - PIPE_SPEED,
+            }))
+            .filter(pipe => pipe.left + PIPE_WIDTH > 0);
+
+          // Check collisions
+          newPipes.forEach(pipe => {
+            const birdLeft = 100;
+            const birdRight = 100 + BIRD_WIDTH;
+            const birdTop = birdPos;
+            const birdBottom = birdPos + BIRD_HEIGHT;
+
+            const pipeLeft = pipe.left;
+            const pipeRight = pipe.left + PIPE_WIDTH;
+            const pipeTopHeight = pipe.height;
+            const pipeBottomTop = pipe.height + PIPE_GAP;
+
+            if (
+              birdRight > pipeLeft &&
+              birdLeft < pipeRight &&
+              (birdTop < pipeTopHeight || birdBottom > pipeBottomTop)
+            ) {
+              setGameOver(true);
+              // Removed onGameOver(); // Notify parent
+              // Play collision sound (Optional)
+              // collisionSound.play();
+            }
+          });
+
+          // Update score
+          newPipes.forEach(pipe => {
+            if (pipe.left + PIPE_WIDTH < 100 && !pipe.passed) {
+              setScore(prev => prev + 1);
+              pipe.passed = true;
+            }
+          });
+
+          return newPipes;
+        });
+
+        gameLoopRef.current = requestAnimationFrame(gameLoop);
+      };
+
+      gameLoopRef.current = requestAnimationFrame(gameLoop);
+      return () => cancelAnimationFrame(gameLoopRef.current);
+    }
+  }, [gameStarted, gameOver, velocity, birdPos]);
+
+  useEffect(() => {
+    if (gameOver) {
+      // Update high score if necessary
+      if (score > highScore) {
+        setHighScore(score);
+        localStorage.setItem('highScore', score);
+      }
+    }
+  }, [gameOver, score, highScore]);
+
+  return (
+    <div 
+      className="relative w-full h-screen overflow-hidden cursor-pointer"
+      onClick={handleFlap}
+      style={{
+        backgroundImage: `url('/game/background.webp')`,
+        backgroundSize: 'cover',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Bird */}
+      <img
+        src="/game/player.png"
+        alt="Player"
+        className={`absolute ${isFlapping ? 'flap-animation' : ''}`}
+        style={{
+          left: '100px',
+          top: `${birdPos}px`,
+          width: `${BIRD_WIDTH}px`,
+          height: `${BIRD_HEIGHT}px`,
+          transform: `rotate(${velocity * 2}deg)`,
+          transition: 'transform 0.1s',
+        }}
+      />
+
+      {/* Pipes */}
+      {pipes.map((pipe, index) => (
+        <React.Fragment key={index}>
+          {/* Top pipe */}
+          <img
+            src="/game/obstacle.png"
+            alt="Pipe Top"
+            className="absolute"
+            style={{
+              left: `${pipe.left}px`,
+              top: 0,
+              width: `${PIPE_WIDTH}px`,
+              height: `${pipe.height}px`,
+              transform: 'scaleY(-1)', // Flip vertically for top pipe
+            }}
+          />
+          {/* Bottom pipe */}
+          <img
+            src="/game/obstacle.png"
+            alt="Pipe Bottom"
+            className="absolute"
+            style={{
+              left: `${pipe.left}px`,
+              top: `${pipe.height + PIPE_GAP}px`,
+              width: `${PIPE_WIDTH}px`,
+              height: `${window.innerHeight - (pipe.height + PIPE_GAP)}px`,
+            }}
+          />
+        </React.Fragment>
+      ))}
+
+      {/* Ground */}
+      <div
+        className="absolute bottom-0 w-full h-24"
+        style={{
+          backgroundImage: `url('/game/ground.png')`, // Optional: Add ground image
+          backgroundSize: 'cover',
+          backgroundRepeat: 'repeat-x',
+        }}
+      />
+
+      {/* Score */}
+      <div className="absolute top-8 left-1/2 -translate-x-1/2 text-4xl text-white font-bold">
+        {score}
+      </div>
+
+      {/* High Score */}
+      <div className="absolute top-8 left-8 text-2xl text-white font-bold">
+        High Score: {highScore}
+      </div>
+
+      {/* Game Over Component */}
+      {gameOver && (
+        <GameOver 
+          score={score}
+          highScore={highScore}
+          onRestart={handleRestart}
+        />
+      )}
+
+      {/* Start message */}
+      {!gameStarted && !gameOver && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-2xl text-white font-bold">
+          Click or Press Space to Start
+        </div>
+      )}
+
+      {/* Flap Animation Keyframes */}
+      <style jsx>{`
+        @keyframes flap {
+          0% { transform: rotate(0deg); }
+          50% { transform: rotate(-20deg); }
+          100% { transform: rotate(0deg); }
+        }
+
+        .flap-animation {
+          animation: flap 0.5s ease-in-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default Game;
