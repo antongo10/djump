@@ -273,3 +273,4 @@ const Game = () => { // Removed onGameOver prop
 };
 
 export default Game;
+ 
