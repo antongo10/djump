@@ -4,6 +4,9 @@ import { Twitter, Rocket } from 'lucide-react';
 const MainScreen = ({ onStart }) => {
   const [playerPos, setPlayerPos] = useState(0);
   const [direction, setDirection] = useState(1);
+  const [copied, setCopied] = useState(false); // State for copy feedback
+
+  const contractAddress = '0x1234...5678'; // Define the contract address
 
   // Floating animation effect for the player sprite
   useEffect(() => {
@@ -17,6 +20,18 @@ const MainScreen = ({ onStart }) => {
 
     return () => clearInterval(interval);
   }, [direction]);
+
+  // Function to copy contract address to clipboard
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(contractAddress)
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+      })
+      .catch(err => {
+        console.error('Failed to copy: ', err);
+      });
+  };
 
   return (
     <div 
@@ -57,8 +72,17 @@ const MainScreen = ({ onStart }) => {
 
         {/* Contract and Social Links */}
         <div className="flex flex-col items-center gap-4 p-6 bg-black/30 rounded-lg backdrop-blur-sm">
-          <p className="text-lg font-mono text-white">
-            Contract: 0x1234...5678
+          <p 
+            className="text-lg font-mono text-white cursor-pointer select-all relative"
+            onClick={copyToClipboard}
+          >
+            Contract: {contractAddress}
+            {/* Feedback message */}
+            {copied && (
+              <span className="absolute top-0 left-full ml-2 px-2 py-1 text-sm text-green-500 bg-white rounded shadow">
+                Copied!
+              </span>
+            )}
           </p>
           
           <div className="flex gap-6">

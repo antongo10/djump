@@ -68,14 +68,6 @@ const GameOver = ({ score, highScore, onRestart }) => {
             <RotateCcw className="mr-2 group-hover:animate-spin" size={20} />
             Play Again
           </button>
-
-          <button
-            onClick={connectWallet}
-            className="group relative flex items-center justify-center w-full p-4 bg-yellow-600 hover:bg-yellow-700 text-white rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-95"
-          >
-            <Wallet className="mr-2 group-hover:animate-bounce" size={20} />
-            Connect Wallet
-          </button>
         </div>
       </div>
     </div>
