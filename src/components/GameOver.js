@@ -9,7 +9,7 @@ const GameOver = ({ score, highScore, onRestart }) => {
   };
 
   const visitPumpFun = () => {
-    window.open('https://pump.fun', '_blank');
+    window.open('https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump', '_blank');
   };
 
   return (
