@@ -12,10 +12,6 @@ const GameOver = ({ score, highScore, onRestart }) => {
     window.open('https://pump.fun', '_blank');
   };
 
-  const connectWallet = () => {
-    alert('Connect Wallet functionality is not implemented yet.');
-  };
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-80 backdrop-blur-sm flex items-center justify-center z-50">
       <div className="relative bg-gradient-to-b from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 shadow-2xl max-w-md w-full mx-4">

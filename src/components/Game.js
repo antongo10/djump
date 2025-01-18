@@ -8,7 +8,7 @@ const PIPE_SPEED = 4;
 const PIPE_WIDTH = 80;
 const BIRD_WIDTH = 70; // Adjusted for image size
 const BIRD_HEIGHT = 70; // Adjusted for image size
-const PIPE_GAP = 250;
+const PIPE_GAP = 350;
 
 const Game = () => { // Removed onGameOver prop
   const [birdPos, setBirdPos] = useState(250);
@@ -197,7 +197,7 @@ const Game = () => { // Removed onGameOver prop
         <React.Fragment key={index}>
           {/* Top pipe */}
           <img
-            src="/game/obstacle.png"
+            src="/game/obstacle1.png"
             alt="Pipe Top"
             className="absolute"
             style={{
@@ -210,7 +210,7 @@ const Game = () => { // Removed onGameOver prop
           />
           {/* Bottom pipe */}
           <img
-            src="/game/obstacle.png"
+            src="/game/obstacle1.png"
             alt="Pipe Bottom"
             className="absolute"
             style={{
