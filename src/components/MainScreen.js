@@ -96,7 +96,7 @@ const MainScreen = ({ onStart }) => {
             </a>
             
             <a 
-              href="https://pump.fun"
+              href="https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-white transition-transform hover:scale-110"
