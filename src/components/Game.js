@@ -1,5 +1,5 @@
 // src/components/Game.js
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import GameOver from './GameOver';
 
 const GRAVITY = 0.6;
@@ -25,9 +25,8 @@ const Game = () => { // Removed onGameOver prop
   const gameLoopRef = useRef();
   const pipeGeneratorRef = useRef();
 
-  // ... [Sound Effects - Optional]
-
-  const handleStart = () => {
+  // Memoize handleStart to prevent unnecessary re-renders
+  const handleStart = useCallback(() => {
     if (gameOver) {
       setBirdPos(250);
       setScore(0);
@@ -36,9 +35,10 @@ const Game = () => { // Removed onGameOver prop
       setVelocity(0);
     }
     setGameStarted(true);
-  };
+  }, [gameOver]);
 
-  const handleFlap = () => {
+  // Memoize handleFlap and include dependencies
+  const handleFlap = useCallback(() => {
     if (!gameStarted) {
       handleStart();
     }
@@ -48,9 +48,10 @@ const Game = () => { // Removed onGameOver prop
     // flapSound.currentTime = 0;
     // flapSound.play();
     setTimeout(() => setIsFlapping(false), 500); // Duration matches flap animation
-  };
+  }, [gameStarted, handleStart]);
 
-  const handleRestart = () => {
+  // Memoize handleRestart
+  const handleRestart = useCallback(() => {
     // Update high score if necessary
     if (score > highScore) {
       setHighScore(score);
@@ -63,7 +64,7 @@ const Game = () => { // Removed onGameOver prop
     setGameOver(false);
     setVelocity(0);
     setGameStarted(false);
-  };
+  }, [score, highScore]);
 
   useEffect(() => {
     const handleKeyPress = (e) => {
@@ -75,7 +76,7 @@ const Game = () => { // Removed onGameOver prop
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [gameStarted]);
+  }, [gameStarted, handleFlap]); // Include handleFlap in dependencies
 
   useEffect(() => {
     if (gameStarted && !gameOver) {
@@ -98,7 +99,6 @@ const Game = () => { // Removed onGameOver prop
           const newPos = prev + velocity;
           if (newPos > window.innerHeight - 100 || newPos < 0) {
             setGameOver(true);
-            // Removed onGameOver(); // Notify parent
             return prev;
           }
           return newPos;
@@ -132,9 +132,6 @@ const Game = () => { // Removed onGameOver prop
               (birdTop < pipeTopHeight || birdBottom > pipeBottomTop)
             ) {
               setGameOver(true);
-              // Removed onGameOver(); // Notify parent
-              // Play collision sound (Optional)
-              // collisionSound.play();
             }
           });
 
@@ -155,7 +152,7 @@ const Game = () => { // Removed onGameOver prop
       gameLoopRef.current = requestAnimationFrame(gameLoop);
       return () => cancelAnimationFrame(gameLoopRef.current);
     }
-  }, [gameStarted, gameOver, velocity, birdPos]);
+  }, [gameStarted, gameOver, velocity, birdPos]); // Removed onGameOver from dependencies
 
   useEffect(() => {
     if (gameOver) {

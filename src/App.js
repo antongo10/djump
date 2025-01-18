@@ -10,14 +10,10 @@ function App() {
     setCurrentView('game');
   };
 
-  const handleGameOver = () => {
-    setCurrentView('main');
-  };
-
   return (
     <div className="App">
       {currentView === 'main' && <MainScreen onStart={handleStart} />}
-      {currentView === 'game' && <Game onGameOver={handleGameOver} />}
+      {currentView === 'game' && <Game />}
     </div>
   );
 }
