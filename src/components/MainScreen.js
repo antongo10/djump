@@ -87,7 +87,7 @@ const MainScreen = ({ onStart }) => {
           
           <div className="flex gap-6">
             <a 
-              href="https://twitter.com/flappybird"
+              href="https://x.com/flump_on_sol"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 text-white transition-transform hover:scale-110"
