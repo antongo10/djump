@@ -1,5 +1,5 @@
 import React from 'react';
-import { Twitter, Rocket, Wallet, RotateCcw } from 'lucide-react';
+import { Twitter, Rocket, RotateCcw } from 'lucide-react';
 
 const GameOver = ({ score, highScore, onRestart }) => {
   const shareOnTwitter = () => {
