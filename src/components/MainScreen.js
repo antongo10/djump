@@ -6,7 +6,7 @@ const MainScreen = ({ onStart }) => {
   const [direction, setDirection] = useState(1);
   const [copied, setCopied] = useState(false); // State for copy feedback
 
-  const contractAddress = ''; // Define the contract address
+  const contractAddress = '0x52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump'; // Define the contract address
 
   // Floating animation effect for the player sprite
   useEffect(() => {
