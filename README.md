@@ -1,4 +1,5 @@
 # Trump Minigame Initiative
+![Main Banner](public/screenshots/main.jpeg)
 
 ![License](https://img.shields.io/github/license/yourusername/trump-minigame)
 ![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-green)
@@ -168,7 +169,7 @@ Interact with the frontend React application to start playing the minigame. Your
 
 ## 📸 Screenshots
 
-![Main Screen](public/screenshots/main-screen.png)
+![Main Screen](public/screenshots/menu.png)
 *Main screen of Trump Minigame*
 
 ![Leaderboard](public/screenshots/leaderboard.png)
