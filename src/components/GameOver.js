@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Twitter, Rocket, RotateCcw } from 'lucide-react';
+import { Twitter, Rocket } from 'lucide-react';
 
 const GameOver = ({ score, onRestart }) => {
   const [wallet, setWallet] = useState(null);
