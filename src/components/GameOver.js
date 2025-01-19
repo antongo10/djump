@@ -13,7 +13,7 @@ const GameOver = ({ score, onRestart }) => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('https://flump.wtf/api/leaderboard');
+      const response = await fetch('https://flappytrump.onrender.com/api/leaderboard');
       const data = await response.json();
       setLeaderboard(data.leaderboard.slice(0, 10));
       setGlobalHighScore(data.globalHighScore);
@@ -42,7 +42,7 @@ const GameOver = ({ score, onRestart }) => {
 
   const submitScore = async (walletAddress) => {
     try {
-      await fetch('https://flump.wtf/api/scores', {
+      await fetch('https://flappytrump.onrender.com/api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ score, wallet: walletAddress }),
