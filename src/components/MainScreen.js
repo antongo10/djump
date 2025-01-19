@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Twitter, Rocket, Github } from 'lucide-react';
+import { Twitter, Rocket, Github, BookType } from 'lucide-react';
 
 const MainScreen = ({ onStart }) => {
   const [playerPos, setPlayerPos] = useState(0);
@@ -132,6 +132,14 @@ const MainScreen = ({ onStart }) => {
               className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
             >
               <Github size={24} />
+            </a>
+            <a
+              href="https://truthsocial.com/@officialtrumpgame"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
+            >
+              <BookType size={24} />
             </a>
           </div>
         </div>
