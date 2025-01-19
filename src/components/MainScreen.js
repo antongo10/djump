@@ -76,7 +76,7 @@ const MainScreen = ({ onStart }) => {
           </span>
           <br />
           <span className="text-3xl font-normal">
-            WELCOME TO $DJUMP - Let Trump Jump
+            WELCOME TO $DJUMP
           </span>
         </h1>
 
