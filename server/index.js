@@ -1,7 +1,10 @@
+require('dotenv').config(); // Load environment variables
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs').promises;
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 app.use(cors());
@@ -9,6 +12,9 @@ app.use(express.json());
 
 // File path for persisting scores
 const SCORES_FILE = path.join(__dirname, 'scores.json');
+
+// Webhook URL for Make.com
+const WEBHOOK_URL = process.env.MAKE_WEBHOOK_URL || 'https://hook.make.com/your-webhook-url';
 
 // In-memory store for scores
 let scores = new Map();
@@ -45,13 +51,27 @@ async function saveScores() {
   }
 }
 
+// Function to send webhook to Make.com
+async function sendWebhook(data) {
+  try {
+    const response = await axios.post(WEBHOOK_URL, data, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    console.log('Webhook sent successfully:', response.status);
+  } catch (error) {
+    console.error('Error sending webhook:', error.message);
+  }
+}
+
 // Submit new score
 app.post('/api/scores', async (req, res) => {
   try {
     const { score, wallet } = req.body;
 
-    if (!score || !wallet) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    if (typeof score !== 'number' || typeof wallet !== 'string') {
+      return res.status(400).json({ error: 'Invalid or missing required fields' });
     }
 
     console.log('Received score submission:', { score, wallet });
@@ -68,6 +88,16 @@ app.post('/api/scores', async (req, res) => {
         globalHighScore = score;
         isNewGlobalHighScore = true;
         console.log(`New global high score: ${score} by ${wallet}`);
+
+        // Prepare data for the webhook
+        const webhookData = {
+          wallet: wallet,
+          score: score,
+          timestamp: new Date().toISOString()
+        };
+
+        // Send webhook asynchronously
+        sendWebhook(webhookData);
       }
 
       // Save scores to file after update
