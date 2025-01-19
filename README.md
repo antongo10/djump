@@ -206,8 +206,8 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 📫 Contact
 
-- **Twitter:** [@flump_on_sol](https://x.com/flump_on_sol)
-- **GitHub:** [yourusername](https://github.com/yourusername/trump-minigame)
+- **Twitter:** [@trumpgameonsol](https://x.com/trumpgameonsol)
+- **GitHub:** [antongo10](https://github.com/antongo10/flappytrump)
 - **Website:** [pump.fun](https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump)
 
 ---
