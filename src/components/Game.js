@@ -21,6 +21,9 @@ const Game = () => { // Removed onGameOver prop
   const [highScore, setHighScore] = useState(() => {
     return parseInt(localStorage.getItem('highScore')) || 0;
   });
+  
+  // State to track the trail positions
+  const [birdTrail, setBirdTrail] = useState([]);
 
   const gameLoopRef = useRef();
   const pipeGeneratorRef = useRef();
@@ -33,6 +36,7 @@ const Game = () => { // Removed onGameOver prop
       setPipes([]);
       setGameOver(false);
       setVelocity(0);
+      setBirdTrail([]); // Reset trail on restart
     }
     setGameStarted(true);
   }, [gameOver]);
@@ -47,7 +51,7 @@ const Game = () => { // Removed onGameOver prop
     // Play flap sound (Optional)
     // flapSound.currentTime = 0;
     // flapSound.play();
-    setTimeout(() => setIsFlapping(false), 500); // Duration matches flap animation
+    setTimeout(() => setIsFlapping(false), 200); // Shorter duration for a snappier flap
   }, [gameStarted, handleStart]);
 
   // Memoize handleRestart
@@ -64,6 +68,7 @@ const Game = () => { // Removed onGameOver prop
     setGameOver(false);
     setVelocity(0);
     setGameStarted(false);
+    setBirdTrail([]); // Reset trail on restart
   }, [score, highScore]);
 
   useEffect(() => {
@@ -146,6 +151,16 @@ const Game = () => { // Removed onGameOver prop
           return newPipes;
         });
 
+        // Update bird trail
+        setBirdTrail(prev => {
+          // Shift existing trail points to the left based on PIPE_SPEED
+          const shifted = prev.map(point => ({ x: point.x - PIPE_SPEED, y: point.y }));
+          // Remove points that are off-screen
+          const filtered = shifted.filter(point => point.x >= 0);
+          // Add new point at the bird's current position
+          return [...filtered, { x: 100, y: birdPos }].slice(-100); // Limit trail length to last 100 points
+        });
+
         gameLoopRef.current = requestAnimationFrame(gameLoop);
       };
 
@@ -174,6 +189,30 @@ const Game = () => { // Removed onGameOver prop
         backgroundRepeat: 'no-repeat',
       }}
     >
+      {/* Bird Trail */}
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        {birdTrail.slice(1).map((point, index) => {
+          const prevPoint = birdTrail[index];
+          if (!prevPoint) return null;
+
+          const isGoingUp = point.y < prevPoint.y;
+          const lineColor = isGoingUp ? 'green' : 'red';
+
+          return (
+            <line
+              key={index}
+              x1={prevPoint.x}
+              y1={prevPoint.y}
+              x2={point.x}
+              y2={point.y}
+              stroke={lineColor}
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          );
+        })}
+      </svg>
+
       {/* Bird */}
       <img
         src="/game/player.png"
@@ -259,13 +298,13 @@ const Game = () => { // Removed onGameOver prop
       {/* Flap Animation Keyframes */}
       <style jsx>{`
         @keyframes flap {
-          0% { transform: rotate(0deg); }
-          50% { transform: rotate(-20deg); }
-          100% { transform: rotate(0deg); }
+          0% { transform: rotate(0deg) translateY(0); }
+          50% { transform: rotate(-20deg) translateY(-10px); }
+          100% { transform: rotate(0deg) translateY(0); }
         }
 
         .flap-animation {
-          animation: flap 0.5s ease-in-out;
+          animation: flap 0.2s ease-in-out;
         }
       `}</style>
     </div>
@@ -273,4 +312,3 @@ const Game = () => { // Removed onGameOver prop
 };
 
 export default Game;
- 
