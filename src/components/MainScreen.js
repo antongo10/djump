@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Twitter, Rocket } from 'lucide-react';
+import { Twitter, Rocket, Github } from 'lucide-react';
 
 const MainScreen = ({ onStart }) => {
   const [playerPos, setPlayerPos] = useState(0);
   const [direction, setDirection] = useState(1);
-  const [copied, setCopied] = useState(false); // State for copy feedback
+  const [copied, setCopied] = useState(false);
+  const contractAddress = '0x52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump';
 
-  const contractAddress = '0x52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump'; // Define the contract address
-
-  // Floating animation effect for the player sprite
   useEffect(() => {
     const interval = setInterval(() => {
       setPlayerPos(prev => {
@@ -17,91 +15,123 @@ const MainScreen = ({ onStart }) => {
         return prev + direction;
       });
     }, 50);
-
     return () => clearInterval(interval);
   }, [direction]);
 
-  // Function to copy contract address to clipboard
   const copyToClipboard = () => {
     navigator.clipboard.writeText(contractAddress)
       .then(() => {
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+        setTimeout(() => setCopied(false), 2000);
       })
-      .catch(err => {
-        console.error('Failed to copy: ', err);
-      });
+      .catch(err => console.error('Failed to copy: ', err));
   };
 
   return (
     <div 
-      className="flex flex-col items-center justify-center w-full h-screen relative"
+      className="relative flex flex-col items-center justify-center w-full min-h-screen bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/game/background.webp')",
-        backgroundSize: 'cover',
-        backgroundPosition: 'center'
+        backgroundImage: "url('/game/background.webp')"
       }}
     >
-      {/* Player sprite with floating animation */}
-      <div 
-        className="absolute transition-transform"
+      {/* Animated background overlay */}
+      <div className="absolute inset-0 bg-black/40 z-0" />
+      
+      {/* Floating particles effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 bg-white/20 rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Player sprite */}
+      <div
+        className="absolute transition-transform duration-300"
         style={{
           transform: `translateY(${playerPos}px)`,
           right: '15%',
           top: '30%'
         }}
       >
-        <img 
-          src="/game/player.png" 
-          alt="Player" 
-          className="w-16 h-16 animate-bounce"
+        <img
+          src="/game/player.png"
+          alt="Player"
+          className="w-20 h-20 animate-bounce"
         />
       </div>
 
-      <div className="z-10 flex flex-col items-center">
-        <h1 className="mb-8 text-5xl font-bold text-white drop-shadow-lg">
-          Flappy Trump Initiative
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center max-w-4xl px-6">
+        <h1 className="mb-8 text-5xl font-bold text-white text-center leading-tight tracking-tight">
+          <span className="bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+            Trump Minigame
+          </span>
+          <br />
+          <span className="text-3xl font-normal">
+            An open-source autonomous gaming framework
+          </span>
         </h1>
 
+        {/* Start button with enhanced hover effects */}
         <button
           onClick={onStart}
-          className="px-8 py-4 mb-8 text-2xl font-semibold text-white transition-all bg-green-500 rounded-lg hover:bg-green-600 hover:scale-105 focus:outline-none shadow-lg"
+          className="relative px-12 py-6 mb-12 text-2xl font-bold text-white bg-gradient-to-r from-green-500 to-green-600 rounded-xl 
+                     hover:from-green-400 hover:to-green-500 transform hover:scale-105 transition-all duration-300
+                     focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-offset-2 focus:ring-offset-black"
         >
           Start Game
+          <div className="absolute inset-0 bg-white/20 rounded-xl animate-pulse" />
         </button>
 
-        {/* Contract and Social Links */}
-        <div className="flex flex-col items-center gap-4 p-6 bg-black/30 rounded-lg backdrop-blur-sm">
-          <p 
-            className="text-lg font-mono text-white cursor-pointer select-all relative"
+        {/* Contract and social links card */}
+        <div className="flex flex-col items-center gap-6 p-8 bg-white/5 backdrop-blur-lg rounded-2xl border border-white/10 shadow-xl">
+          <div 
+            className="group relative cursor-pointer"
             onClick={copyToClipboard}
           >
-            Contract: {contractAddress}
-            {/* Feedback message */}
+            <p className="text-lg font-mono text-white/90 select-all transition-colors group-hover:text-white">
+              Contract: {contractAddress}
+            </p>
             {copied && (
-              <span className="absolute top-0 left-full ml-2 px-2 py-1 text-sm text-green-500 bg-white rounded shadow">
-                Copied!
+              <span className="absolute -top-8 left-1/2 transform -translate-x-1/2 px-3 py-1 text-sm text-green-400 bg-black/90 rounded-full">
+                Copied! ✓
               </span>
             )}
-          </p>
-          
-          <div className="flex gap-6">
-            <a 
+          </div>
+
+          {/* Social links with improved hover effects */}
+          <div className="flex gap-8">
+            <a
               href="https://x.com/flump_on_sol"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-white transition-transform hover:scale-110"
+              className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
             >
               <Twitter size={24} />
             </a>
-            
-            <a 
+            <a
               href="https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump"
               target="_blank"
               rel="noopener noreferrer"
-              className="p-2 text-white transition-transform hover:scale-110"
+              className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
             >
               <Rocket size={24} />
+            </a>
+            <a
+              href="https://github.com/yourusername/trump-minigame"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
+            >
+              <Github size={24} />
             </a>
           </div>
         </div>
