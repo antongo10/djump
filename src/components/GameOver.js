@@ -117,7 +117,7 @@ const GameOver = ({ score, onRestart }) => {
             <div className="flex justify-center space-x-4 pt-2">
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `I just scored ${score} points! Can you beat me?`
+                  `I just scored ${score} points! Can you beat me? @trumpgameonsol`
                 )}&url=${encodeURIComponent(window.location.href)}`}
                 target="_blank"
                 rel="noopener noreferrer"

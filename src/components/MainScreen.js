@@ -110,7 +110,7 @@ const MainScreen = ({ onStart }) => {
           {/* Social links with improved hover effects */}
           <div className="flex gap-8">
             <a
-              href="https://x.com/flump_on_sol"
+              href="https://x.com/trumpgameonsol"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
@@ -126,7 +126,7 @@ const MainScreen = ({ onStart }) => {
               <Rocket size={24} />
             </a>
             <a
-              href="https://github.com/yourusername/trump-minigame"
+              href="https://github.com/antongo10/flappytrump"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
