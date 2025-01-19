@@ -1,70 +1,225 @@
-# Getting Started with Create React App
+# Trump Minigame Initiative
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![License](https://img.shields.io/github/license/yourusername/trump-minigame)
+![Node.js](https://img.shields.io/badge/node-%3E%3D14.0.0-green)
+![Web3](https://img.shields.io/badge/Web3-Enabled-blue)
 
-## Available Scripts
+## 🚀 Overview
 
-In the project directory, you can run:
+**Trump Minigame Initiative** is an open-source framework designed to empower developers to create engaging Web3-enabled minigames with autonomous high score reporting. Leveraging blockchain technology, the framework ensures secure, transparent, and decentralized leaderboards, while the autonomous agent handles high score tracking and social media integrations, such as tweeting new high scores.
 
-### `npm start`
+## 🎮 Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Web3 Authentication:** Seamlessly integrate blockchain-based user authentication.
+- **Autonomous High Score Reporting:** Automatically track and report the highest scores.
+- **Decentralized Leaderboards:** Transparent and tamper-proof leaderboards powered by blockchain.
+- **Social Media Integration:** Automatically tweet when new high scores are achieved.
+- **Modular Framework:** Easily extendable to create a variety of minigames.
+- **Responsive Design:** Optimized for both desktop and mobile browsers.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🛠️ Technologies Used
 
-### `npm test`
+- **Backend:** Node.js, Express.js, Solidity (Smart Contracts)
+- **Frontend:** React, Tailwind CSS
+- **Blockchain:** Ethereum (Web3)
+- **Database:** JSON file-based storage for simplicity
+- **Others:** CORS, Lucide-React for icons
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 📂 Project Structure
 
-### `npm run build`
+```
+HighScore.sol       build               package-lock.json  postcss.config.js  server           tailwind.config.js
+README.md           node_modules        package.json       public             src
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **HighScore.sol:** Solidity smart contract for managing high scores.
+- **build:** Compiled smart contracts.
+- **node_modules:** Project dependencies.
+- **package.json:** Project metadata and dependencies.
+- **postcss.config.js & tailwind.config.js:** Configuration files for Tailwind CSS.
+- **server:** Backend server code handling API requests and high score logic.
+- **public:** Static assets for the frontend.
+- **src:** React frontend source code.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🛠️ Installation
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Prerequisites
 
-### `npm run eject`
+- **Node.js** (v14 or higher)
+- **npm** or **yarn**
+- **Git**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Steps
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. **Clone the Repository**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+   ```bash
+   git clone https://github.com/yourusername/trump-minigame.git
+   cd trump-minigame
+   ```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+2. **Install Dependencies**
 
-## Learn More
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+3. **Set Up Environment Variables**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+   Create a `.env` file in the root directory and add necessary environment variables. Example:
 
-### Code Splitting
+   ```env
+   PORT=3001
+   CONTRACT_ADDRESS=0x52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+4. **Compile Smart Contracts**
 
-### Analyzing the Bundle Size
+   Ensure you have Solidity installed or use a tool like Hardhat or Truffle.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+   ```bash
+   # Example with Hardhat
+   npx hardhat compile
+   ```
 
-### Making a Progressive Web App
+5. **Run the Server**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+   ```bash
+   npm run server
+   # or
+   yarn server
+   ```
 
-### Advanced Configuration
+6. **Start the Frontend**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+   In a new terminal window:
 
-### Deployment
+   ```bash
+   npm start
+   # or
+   yarn start
+   ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+7. **Access the Application**
 
-### `npm run build` fails to minify
+   Open your browser and navigate to `http://localhost:3000` to start playing.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## ⚙️ Usage
+
+### Submitting a High Score
+
+Send a `POST` request to `/api/scores` with the following JSON payload:
+
+```json
+{
+  "score": 1500,
+  "wallet": "0xYourEthereumWalletAddress"
+}
+```
+
+### Fetching the Leaderboard
+
+Send a `GET` request to `/api/leaderboard` to retrieve the top 10 high scores.
+
+### Playing the Game
+
+Interact with the frontend React application to start playing the minigame. Your high scores will be tracked and displayed on the leaderboard.
+
+## 📜 API Endpoints
+
+### `POST /api/scores`
+
+**Description:** Submit a new score.
+
+**Request Body:**
+
+- `score` (number): The score achieved by the player.
+- `wallet` (string): The player's Ethereum wallet address.
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "newGlobalHighScore": true,
+  "personalBest": 1500,
+  "globalHighScore": 1500
+}
+```
+
+### `GET /api/leaderboard`
+
+**Description:** Retrieve the top 10 high scores.
+
+**Response:**
+
+```json
+{
+  "leaderboard": [
+    { "wallet": "0x12...34EF", "score": 2000 },
+    { "wallet": "0x56...78GH", "score": 1800 },
+    // ...
+  ],
+  "globalHighScore": 2000
+}
+```
+
+## 📸 Screenshots
+
+![Main Screen](public/screenshots/main-screen.png)
+*Main screen of Trump Minigame*
+
+![Leaderboard](public/screenshots/leaderboard.png)
+*Leaderboard showcasing top scores*
+
+## 🤝 Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. **Fork the Project**
+
+2. **Create your Feature Branch**
+
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+
+3. **Commit your Changes**
+
+   ```bash
+   git commit -m "Add some AmazingFeature"
+   ```
+
+4. **Push to the Branch**
+
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+
+5. **Open a Pull Request**
+
+## 📝 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+## 📫 Contact
+
+- **Twitter:** [@flump_on_sol](https://x.com/flump_on_sol)
+- **GitHub:** [yourusername](https://github.com/yourusername/trump-minigame)
+- **Website:** [pump.fun](https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump)
+
+---
+
+> **Note:** This project is a playful initiative and not endorsed by any political figures.
+
+# Acknowledgments
+
+- [Lucide-React](https://lucide.dev/) for the icon library.
+- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework.
+- [Express.js](https://expressjs.com/) for the backend server framework.
+
+---
+
+Feel free to customize this README to better fit your project's unique aspects and requirements!
