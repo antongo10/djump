@@ -13,7 +13,7 @@ const GameOver = ({ score, onRestart }) => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('https://refactored-disco-7vp7j4xp67x72w5px-3001.app.github.dev/api/leaderboard');
+      const response = await fetch('https://flump.wtf/api/leaderboard');
       const data = await response.json();
       setLeaderboard(data.leaderboard.slice(0, 10));
       setGlobalHighScore(data.globalHighScore);
@@ -42,7 +42,7 @@ const GameOver = ({ score, onRestart }) => {
 
   const submitScore = async (walletAddress) => {
     try {
-      await fetch('https://refactored-disco-7vp7j4xp67x72w5px-3001.app.github.dev/api/scores', {
+      await fetch('https://flump.wtf/api/scores', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ score, wallet: walletAddress }),
