@@ -126,7 +126,7 @@ const MainScreen = ({ onStart }) => {
               <Rocket size={24} />
             </a>
             <a
-              href="https://github.com/antongo10/flappytrump"
+              href="https://github.com/antongo10/djump"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
