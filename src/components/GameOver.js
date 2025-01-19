@@ -126,7 +126,7 @@ const GameOver = ({ score, onRestart }) => {
                 <Twitter size={24} />
               </a>
               <a
-                href="https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump"
+                href="https://pump.fun/coin/s"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-purple-400 hover:text-purple-300 transition-colors"

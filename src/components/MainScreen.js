@@ -5,7 +5,7 @@ const MainScreen = ({ onStart }) => {
   const [playerPos, setPlayerPos] = useState(0);
   const [direction, setDirection] = useState(1);
   const [copied, setCopied] = useState(false);
-  const contractAddress = '0x52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump';
+  const contractAddress = '';
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -118,7 +118,7 @@ const MainScreen = ({ onStart }) => {
               <Twitter size={24} />
             </a>
             <a
-              href="https://pump.fun/coin/52ezjYa79Jgh5UTpqyR1HQVyULi2H8EfEUV2pYEjpump"
+              href="https://pump.fun/coin/"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 text-white/80 hover:text-white bg-white/5 rounded-full transition-all hover:scale-110 hover:bg-white/10"
